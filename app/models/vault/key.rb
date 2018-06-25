@@ -7,7 +7,7 @@ module Vault
     has_and_belongs_to_many :tags
     unloadable
 
-    attr_accessible :project_id, :name, :body, :login, :type, :file, :project, :url, :comment, :whitelist
+    attr_accessible :project_id, :name, :body, :login, :type, :file, :project, :url, :comment
 
     #def tags=(tags_string)
     #  @tags = Vault::Tag.create_from_string(tags_string)
@@ -35,18 +35,12 @@ module Vault
               type: rhash['type'],
               file: rhash['file'],
               url: rhash['url'],
-              comment: rhash['comment'],
-              whitelist: rhash['comment']
+              comment: rhash['comment']
           ).update_column(:id, rhash['id'])
         rescue
 
         end
       end
-    end
-
-    def whitelisted?(user,project)
-      return true if user.current.admin or !user.current.allowed_to?(:whitelist_keys, project)
-      return self.whitelist.split(",").include?(user.current.id.to_s)
     end
 
   end

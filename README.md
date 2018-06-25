@@ -7,6 +7,10 @@ Allows you to store various passwords/keys in one place for the project.
 
 https://noshutdown.ru/en/redmine-plugins-vault/#about
 
+# About this fork:
+
+removed whitelists
+
 # Installation
 
 ```

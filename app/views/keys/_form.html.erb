@@ -48,42 +48,6 @@
       <%= f.text_area :comment, class: 'wiki-edit',:readonly => true %></p>
     <% end %>
 
-    <% if User.current.allowed_to?(:manage_whitelist_keys, @project) %>
-      <%  whitelisted = @key.whitelist.split(",") %>
- 			<%  all_users = @project.memberships.active.where(:users => {:type => 'User'}).sort.map {|u| [u.principal, u.principal.id.to_s]} %>
-      <div id="vault_whitelist">
-        <%= f.label t('key.attr.whitelist') ,class: "whitelist_users"%>
-
-      <table class='whitelist_users'>
-        <tr>
-          <td style ='padding-left:0'>
-            <%= label_tag 'selected_users', t('key.whitelist.selected_members'), class: "no-css" %>
-            <br />
-            <%= select_tag 'whitelist',
-									options_for_select(all_users.select {|u| whitelisted.include?(u[1])}),
-									id: 'selected_users', multiple: true, size: 10, 
-									ondblclick: "moveOptions(this.form.selected_users, this.form.available_users)" %>
-          </td>
-					<td class="buttons">
-						 <input type="button" value="&#8594;"
-							onclick="moveOptions(this.form.selected_users, this.form.available_users);" /><br />
-						 <input type="button" value="&#8592;"
-							onclick="moveOptions(this.form.available_users, this.form.selected_users);" />
-					 </td>
-
-          <td>
-            <%= label_tag 'available_users', t('key.whitelist.available_members'), class: "no-css" %>
-            <br />
-            <%= select_tag 'available_users',
-									options_for_select(all_users.select {|u| not whitelisted.include?(u[1])}),
-									id: 'available_users', multiple: true, size: 10,
-									ondblclick: "moveOptions(this.form.available_users, this.form.selected_users)" %>
-          </td>
-        </tr>
-      </table>
-
-      </div>
-    <% end %>
   </div>
 
   <% if User.current.allowed_to?(:edit_keys, @project) %>
@@ -92,10 +56,3 @@
 
   <% end %>
 <% end %>
-<%= javascript_tag do %>
- $(document).ready(function(){
-   $('#vault_whitelist').closest('form').submit(function(){
-     $('#selected_users option').prop('selected', true);
-   });
- });
- <% end %>

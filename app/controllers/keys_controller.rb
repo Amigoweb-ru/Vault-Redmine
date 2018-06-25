@@ -51,7 +51,6 @@ class KeysController < ApplicationController
     end
 
     @keys = @keys.order(sort_clause) unless @keys.nil?
-    @keys = @keys.select { |key| key.whitelisted?(User,@project) } unless @keys.nil?
     @keys = [] if @keys.nil? #hack for decryption
 
     @limit = per_page_option
@@ -108,37 +107,17 @@ class KeysController < ApplicationController
     end
   end
 
-  def update_wishlist
-    if params[:whitelist] && User.current.allowed_to?(:manage_whitelist_keys, @key.project)
-      if params[:whitelist].blank?
-          @key.whitelist = ""
-      else
-          @key.whitelist =  params[:whitelist].join(",")
-      end
-    end
-  end
-
   def edit
-    if !@key.whitelisted?(User,@project)
-      render_error t("error.key.not_whitelisted")
-      return
-    else
-      @key.decrypt!
-      respond_to do |format|
-        format.html { render action: 'edit'}
-      end
+    @key.decrypt!
+    respond_to do |format|
+      format.html { render action: 'edit'}
     end
   end
 
   def show
-    if !@key.whitelisted?(User,@project)
-      render_error t("error.key.not_whitelisted")
-      return
-    else
-      @key.decrypt!
-      respond_to do |format|
-        format.html { render action: 'show'}
-      end
+    @key.decrypt!
+    respond_to do |format|
+      format.html { render action: 'show'}
     end
   end
 
