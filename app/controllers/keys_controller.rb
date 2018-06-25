@@ -108,6 +108,7 @@ class KeysController < ApplicationController
   end
 
   def update_wishlist
+    # here due to unknown amount of calls of it
   end
 
   def edit
