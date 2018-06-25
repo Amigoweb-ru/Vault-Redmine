@@ -107,6 +107,9 @@ class KeysController < ApplicationController
     end
   end
 
+  def update_wishlist
+  end
+
   def edit
     @key.decrypt!
     respond_to do |format|
